@@ -23,4 +23,3 @@ for i in image_list:
     if exif_apple(joined) == 'Apple':
         print "Copying", i, "to", destination_folder
         shutil.copy2(joined,destination_folder)
-

@@ -3,6 +3,7 @@ import shutil
 import logging
 from typing import ClassVar
 from PIL import Image, UnidentifiedImageError
+from tqdm import tqdm  # Added for progress bar
 
 logger = logging.getLogger(__name__)
 
@@ -23,16 +24,20 @@ class ApplePhotoCopier:
         ".dng",
     )
 
-    def __init__(self, source: Path, destination: Path, move: bool = False):
+    def __init__(
+        self, source: Path, destination: Path, move: bool = False, dry_run: bool = False
+    ):
         """
         Args:
             source (Path): Source directory.
             destination (Path): Destination directory.
             move (bool): If True, files are moved instead of copied.
+            dry_run (bool): If True, simulate the action without changing files.
         """
         self.source: Path = source
         self.destination: Path = destination
         self.move: bool = move
+        self.dry_run: bool = dry_run
         self.files_copied: int = 0
 
     def is_apple_image_file(self, filename: str) -> bool:
@@ -75,15 +80,26 @@ class ApplePhotoCopier:
         Copies or moves Apple image files from source to destination.
         """
         self.prepare_destination()
-        for file in self.source.iterdir():
-            if file.is_file() and self.is_apple_image_file(file.name):
-                make = self.get_exif_make(file)
-                if make == "Apple":
+
+        files = [
+            f
+            for f in self.source.iterdir()
+            if f.is_file() and self.is_apple_image_file(f.name)
+        ]
+
+        for file in tqdm(files, desc="Processing images", unit="file"):
+            make = self.get_exif_make(file)
+            if make == "Apple":
+                target = self.destination / file.name
+                if self.dry_run:
                     logger.info(
-                        f"{'Moving' if self.move else 'Copying'} {file.name} -> {self.destination}"
+                        f"[Dry-run] Would {'move' if self.move else 'copy'} {file.name} -> {target}"
+                    )
+                else:
+                    logger.info(
+                        f"{'Moving' if self.move else 'Copying'} {file.name} -> {target}"
                     )
                     try:
-                        target = self.destination / file.name
                         if self.move:
                             shutil.move(file, target)
                         else:
@@ -91,6 +107,8 @@ class ApplePhotoCopier:
                         self.files_copied += 1
                     except Exception as err:
                         logger.error(f"Error processing {file}: {err}")
+
         logger.info(
             f"Finished. {self.files_copied} Apple photo(s) {'moved' if self.move else 'copied'}."
+            + (f" (Dry run)" if self.dry_run else "")
         )

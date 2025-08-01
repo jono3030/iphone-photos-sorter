@@ -11,9 +11,11 @@ def main():
     parser = build_parser()
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
     copier = ApplePhotoCopier(
         Path(args.src_folder),
         Path(args.dest_folder),
-        args.move,
+        move=args.move,
+        dry_run=args.dry_run,
     )
     copier.copy()

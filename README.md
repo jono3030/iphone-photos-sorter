@@ -36,4 +36,6 @@ $ PYTHONPATH=$(pwd)/src uv run mkdocs serve
 
 ## To-do
 
-- [ ] Package this correctly so it can easily be run without `UV`
+- [ ] Package this correctly so it can easily be run without `UV`.
+- [ ] Add checks whether files already exist in destination foder.
+- [ ] tqdm status bars could be improved. Look a bit awkward atm. 

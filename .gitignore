@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment folders
+.venv/
+env/
+venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# MkDocs site output folder
+/site/
+
+# Python test cache
+.pytest_cache/
+
+# VSCode settings
+.vscode/
+
+# macOS system files
+.DS_Store
+
+# Editor swap files
+*.swp
+*~
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# JetBrains IDEs
+.idea/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# IPython Notebook checkpoints
+.ipynb_checkpoints/

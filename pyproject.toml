@@ -1,0 +1,20 @@
+[project]
+name = "iphotocopy"
+version = "0.1.0-alpha"
+description = "Copies photos made with an iPhone into destination folder"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "Jonas Osmann"}]
+dependencies = [
+    "mkdocs>=1.6.1",
+    "mkdocstrings[python]>=0.30.0",
+    "pillow>=11.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
